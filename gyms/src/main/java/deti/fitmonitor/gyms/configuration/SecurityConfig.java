@@ -1,4 +1,4 @@
-package deti.fitmonitor.gymsconfiguration;
+package deti.fitmonitor.gyms.configuration;
 
 import deti.fitmonitor.gyms.configuration.JwtAuthFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +30,7 @@ public class SecurityConfig {
         this.jwtAuthFilter = jwtAuthFilter;
     }
 
+    //change this later based on roles
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.cors(Customizer.withDefaults())
@@ -37,7 +38,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         request -> request
                                 .requestMatchers("/api/token").permitAll()
-                                .requestMatchers("/api/login").hasRole(null)
+                                .requestMatchers("/machine*").permitAll()
+                                .requestMatchers("/gym*").permitAll()
                                 .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
