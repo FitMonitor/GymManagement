@@ -24,4 +24,6 @@ public class Gym {
 
     @OneToMany(mappedBy = "gym")
     private List<Machine> machines;
+
+    private String description;
 }

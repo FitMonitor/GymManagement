@@ -14,8 +14,8 @@ public class MachineService {
         this.machineRepository = machineRepository;
     }
 
-    public void createMachine(Machine machine) {
-        machineRepository.save(machine);
+    public Machine createMachine(Machine machine) {
+        return machineRepository.save(machine);
     }
 
     public Machine getMachine(Long id) {

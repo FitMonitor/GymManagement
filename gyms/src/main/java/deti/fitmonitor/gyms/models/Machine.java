@@ -23,5 +23,7 @@ public class Machine {
     @ManyToOne
     @JoinColumn(name = "gym_id")
     private Gym gym;
+
+    private String description;
 }
 

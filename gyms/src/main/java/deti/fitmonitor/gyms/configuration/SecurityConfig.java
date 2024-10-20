@@ -38,8 +38,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         request -> request
                                 .requestMatchers("/api/token").permitAll()
-                                .requestMatchers("/machine*").permitAll()
-                                .requestMatchers("/gym*").permitAll()
+                                .requestMatchers("/machine/*").permitAll()
+                                .requestMatchers("/machine").permitAll()
+                                .requestMatchers("/gym/*").permitAll()
                                 .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
