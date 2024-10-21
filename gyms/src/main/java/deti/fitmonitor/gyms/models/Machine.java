@@ -1,6 +1,8 @@
 package deti.fitmonitor.gyms.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,6 +24,7 @@ public class Machine {
 
     @ManyToOne
     @JoinColumn(name = "gym_id")
+    @JsonIgnoreProperties("machines")
     private Gym gym;
 
     private String description;
