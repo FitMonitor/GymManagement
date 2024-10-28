@@ -12,6 +12,10 @@
 	<artifactId>gyms</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>gyms</name>
+	<properties>
+	  <sonar.organization>fitmonitor</sonar.organization>
+	  <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+	</properties>
 	<description>Gym Management microservice</description>
 	<url/>
 	<licenses>
