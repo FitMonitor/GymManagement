@@ -24,7 +24,6 @@ class MachineRepositoryTest {
     //not working, check later
 
     @Test
-    @Disabled
     void testSaveMachine() {
         Machine machine = new Machine();
         machine.setName("Machine 1");
