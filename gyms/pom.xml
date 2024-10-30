@@ -20,6 +20,8 @@
 		<junit-platform-suite.version>1.10.1</junit-platform-suite.version>
 		<cucumber.version>7.15.0</cucumber.version>
 		<webdrivermanager.version>5.7.0</webdrivermanager.version>
+		<sonar.organization>fitmonitor</sonar.organization>
+	    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
 	</properties>
 	<dependencies>
 		<dependency>
