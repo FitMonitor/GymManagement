@@ -12,6 +12,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.List;
 
+//cors
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/machine")
 @Tag(name = "movies", description = "Endpoints to manage movies")

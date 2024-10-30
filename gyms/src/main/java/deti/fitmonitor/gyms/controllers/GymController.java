@@ -10,6 +10,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.List;
 
+//cors
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/gym")
 @Tag(name = "gyms", description = "Endpoints to manage gyms")
