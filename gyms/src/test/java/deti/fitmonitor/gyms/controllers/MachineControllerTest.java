@@ -10,7 +10,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import deti.fitmonitor.gyms.models.Machine;
-import deti.fitmonitor.gyms.repositories.MachineRepository;
 import deti.fitmonitor.gyms.services.JwtUtilService;
 import deti.fitmonitor.gyms.services.MachineService;
 

@@ -6,8 +6,6 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import org.junit.jupiter.api.Disabled;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
@@ -21,8 +19,6 @@ class MachineRepositoryTest {
     @Autowired
     private MachineRepository machineRepository;
 
-    //not working, check later
-
     @Test
     void testSaveMachine() {
         Machine machine = new Machine();
@@ -35,7 +31,5 @@ class MachineRepositoryTest {
         List<Machine> machines = machineRepository.findAll();
         assertThat(machines).hasSize(1);
     }
-
-
 
 }

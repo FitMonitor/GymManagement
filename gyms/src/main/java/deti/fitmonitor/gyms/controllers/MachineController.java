@@ -4,7 +4,6 @@ import deti.fitmonitor.gyms.models.Machine;
 import deti.fitmonitor.gyms.services.MachineService;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;

@@ -2,7 +2,6 @@ package deti.fitmonitor.gyms.controllers;
 
 import deti.fitmonitor.gyms.models.Gym;
 import deti.fitmonitor.gyms.services.GymService;
-import deti.fitmonitor.gyms.services.MachineService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
