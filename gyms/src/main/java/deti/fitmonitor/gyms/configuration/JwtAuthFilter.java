@@ -54,7 +54,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             try {
                 // Extract roles from the token
                 roles = jwtUtil.extractRoles(token);
-                System.out.println("Roles: " + roles);
 
                 if (roles != null && !roles.isEmpty()) {
                     // Convert roles into a list of GrantedAuthority
@@ -72,7 +71,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                     // Set the authentication details
                     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 
-                    System.out.println("Authentication: " + authentication);
                     // Set the authenticated user in the security context
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }

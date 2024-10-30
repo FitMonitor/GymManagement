@@ -23,7 +23,7 @@ import java.util.List;
 
 @WebMvcTest(MachineController.class)
 @AutoConfigureMockMvc(addFilters = false)
-public class MachineControllerTest {
+class MachineControllerTest {
 
     @Autowired
     private MockMvc mockMvc;

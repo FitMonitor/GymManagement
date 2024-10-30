@@ -46,11 +46,10 @@ public class GetTokenController {
     // Handle GET request
     @GetMapping("/get")
     public ResponseEntity<Map<String, Object>> getToken(@RequestParam String code) throws Exception {
-        System.out.println("Code: " + code);
 
         // Check if the token is already cached
         if (tokenCache.containsKey(code)) {
-            System.out.println("Returning cached token for code: " + code);
+           
 
             String jwtToken = tokenCache.get(code);
 
@@ -61,8 +60,6 @@ public class GetTokenController {
 
             // Extract roles from the token
             List<String> roles = jwtUtilService.extractRoles(id_token); // Use JwtUtilService
-
-            System.out.println("Roles: " + roles);
 
 
             return ResponseEntity.ok(getTokenResponse(jwtToken, roles));
@@ -75,7 +72,6 @@ public class GetTokenController {
         try {
             // Double-check if the token is cached after acquiring the lock
             if (tokenCache.containsKey(code)) {
-                System.out.println("Returning cached token for code after acquiring lock: " + code);
 
                 String jwtToken = tokenCache.get(code);
 
@@ -86,9 +82,6 @@ public class GetTokenController {
 
                 // Extract roles from the token
                 List<String> roles = jwtUtilService.extractRoles(id_token); // Use JwtUtilService
-
-                System.out.println("Roles: " + roles);
-
 
                 return ResponseEntity.ok(getTokenResponse(jwtToken, roles));
             }
@@ -121,8 +114,6 @@ public class GetTokenController {
 
             // Extract roles from the token
             List<String> roles = jwtUtilService.extractRoles(id_token); // Use JwtUtilService
-
-            System.out.println("Roles: " + roles);
 
             // Prepare the response
             return ResponseEntity.ok(getTokenResponse(jwtToken, roles));
