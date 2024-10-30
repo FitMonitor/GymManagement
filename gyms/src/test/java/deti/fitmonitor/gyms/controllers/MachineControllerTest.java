@@ -99,7 +99,7 @@ public class MachineControllerTest {
         mockMvc.perform(post("/machine")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(machine)))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.name", is("Machine 1")))
                 .andExpect(jsonPath("$.available", is(true)))
