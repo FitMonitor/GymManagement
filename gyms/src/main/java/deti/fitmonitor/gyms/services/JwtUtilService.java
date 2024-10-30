@@ -66,6 +66,9 @@ public class JwtUtilService {
     private RSAPublicKey getPublicKeyFromJwks(String kid) throws Exception {
         // Fetch the JWKS from the provided URL
         JsonNode jwks = restTemplate.getForObject(jwksUrl, JsonNode.class);
+        if (jwks == null) {
+            throw new NullPointerException("Unable to fetch JWKS");
+        }
         for (JsonNode key : jwks.get("keys")) {
             if (key.get("kid").asText().equals(kid)) {
                 String modulus = key.get("n").asText();

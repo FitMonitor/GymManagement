@@ -37,8 +37,7 @@ public class MachineController {
         return ResponseEntity.ok(machine);
     }
 
-    @GetMapping
-    @RequestMapping("/all")
+    @GetMapping("/all")
     public ResponseEntity<List<Machine>>  getMachines() {
         List<Machine> machines = machineService.getAllMachines();
         return ResponseEntity.ok(machines);
