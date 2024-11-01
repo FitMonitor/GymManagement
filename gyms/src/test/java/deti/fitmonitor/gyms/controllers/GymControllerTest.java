@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.hamcrest.Matchers.nullValue;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -32,10 +33,7 @@ class GymControllerTests {
     @MockBean
     private GymService gymService;
 
-    @BeforeEach
-    void setUp() {
-        gymService = Mockito.mock(GymService.class);
-    }
+    
 
     @WithMockUser(username = "user", roles = "USER")
     @Test
@@ -104,7 +102,9 @@ class GymControllerTests {
     @WithMockUser(username = "user", roles = "USER")
     @Test
     void getGymOccupancy_MissingId_ShouldReturnNoContent() throws Exception {
-        mockMvc.perform(get("/api/gyms/occupancy?id=1")
+        when(gymService.getOccupancy(500L)).thenReturn(null);
+
+        mockMvc.perform(get("/api/gyms/occupancy?id=500")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON))
                         .andExpect(status().isNotFound());

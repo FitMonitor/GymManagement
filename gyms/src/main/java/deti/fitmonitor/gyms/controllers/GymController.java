@@ -25,13 +25,17 @@ public class GymController {
         return new ResponseEntity<>(gym, HttpStatus.CREATED);
     }
 
-    @GetMapping("{id}")
+    @GetMapping()
     public ResponseEntity<Gym> getGym(@RequestParam Long id) {
         Gym gym = gymService.getGymByID(id);
-        return new ResponseEntity<>(gym, HttpStatus.OK);
+        if (gym == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        return ResponseEntity.ok(gym);
     }
 
-    @GetMapping("/occupancy/{id}")
+
+    @GetMapping("/occupancy")
     public ResponseEntity<Integer> getGymOccupancy(@RequestParam Long id) {
         Integer occupancy = gymService.getOccupancy(id);
         if (occupancy == null) {

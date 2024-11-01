@@ -31,21 +31,14 @@ public class GymService {
     }
 
     public Gym getGymByID(Long id) {
-        Optional<Gym> gymOpt = gymRepository.findById(id);
-        if (gymOpt.isEmpty()) {
-            throw new RuntimeException("Gym doesn't exists");
-        }
-        return gymOpt.get();
+        return gymRepository.findById(id).orElse(null);
+        
     }
 
-    public Integer getOccupancy(Long gymId){
-        Optional<Gym> gym = gymRepository.findById(gymId);
-        if (gym.isPresent()) {
-            return gym.get().getOccupancy();
-        }
-        else {
-            throw new RuntimeException("Gym doesn't exists");
-        }
+    public Integer getOccupancy(Long gymId) {
+        return gymRepository.findById(gymId)
+                .map(Gym::getOccupancy)
+                .orElse(null);
     }
 
     public void checkInUpdate(Long gymId){
