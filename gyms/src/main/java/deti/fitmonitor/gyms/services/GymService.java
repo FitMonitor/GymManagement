@@ -30,18 +30,18 @@ public class GymService {
         return gymRepository.save(gym);
     }
 
-    public Gym getGym(String gymName) {
-        Optional<Gym> gymOpt = gymRepository.findByGymName(gymName);
+    public Gym getGymByID(Long id) {
+        Optional<Gym> gymOpt = gymRepository.findById(id);
         if (gymOpt.isEmpty()) {
             throw new RuntimeException("Gym doesn't exists");
         }
         return gymOpt.get();
     }
 
-    public Gym getOccupancy(Long gymId){
+    public Integer getOccupancy(Long gymId){
         Optional<Gym> gym = gymRepository.findById(gymId);
         if (gym.isPresent()) {
-            return gym.get();
+            return gym.get().getOccupancy();
         }
         else {
             throw new RuntimeException("Gym doesn't exists");

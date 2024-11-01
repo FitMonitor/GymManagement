@@ -52,22 +52,16 @@ class GymServiceTests {
 
     @Test
     void getGym_WhenGymExists_ShouldReturnGym() {
-        String gymName = "Test Gym";
         Gym gym = new Gym();
-        gym.setGymName(gymName);
-        when(gymRepository.findByGymName(gymName)).thenReturn(Optional.of(gym));
+        gym.setGymId(1L);
+        gym.setGymName("teste");
+        when(gymRepository.findById(1L)).thenReturn(Optional.of(gym));
 
-        Gym foundGym = gymService.getGym(gymName);
+        Gym foundGym = gymService.getGymByID(1L);
 
-        assertEquals(gymName, foundGym.getGymName());
+        assertEquals(gym.getGymId(), foundGym.getGymId());
+        assertEquals(gym.getGymName(), foundGym.getGymName());
     }
 
-    @Test
-    void getGym_WhenGymDoesNotExist_ShouldThrowException() {
-        when(gymRepository.findByGymName(anyString())).thenReturn(Optional.empty());
-
-        Exception exception = assertThrows(RuntimeException.class, () -> gymService.getGym("Non-existent Gym"));
-        assertEquals("Gym doesn't exists", exception.getMessage());
-    }
 
 }

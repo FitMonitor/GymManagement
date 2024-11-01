@@ -5,12 +5,9 @@ import deti.fitmonitor.gyms.services.GymService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
+
 
 @RestController
 @RequestMapping("/api/gyms")
@@ -20,46 +17,26 @@ public class GymController {
     private GymService gymService;
 
     @PostMapping("/create")
-    public ResponseEntity<Gym> createGym(@RequestBody Map<String, String> requestBody) {
-        if(!requestBody.containsKey("gymName")||!requestBody.containsKey("capacity")){
-            return  new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<Gym> createGym(@RequestBody Gym gym) {
+        if (gym.getGymName() == null || gym.getCapacity() == 0) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        String gymName = requestBody.get("gymName");
-        int capacity = Integer.parseInt(requestBody.get("capacity"));
-        Gym gym = gymService.createGym(gymName,capacity);
+        gymService.createGym(gym.getGymName(), gym.getCapacity());
         return new ResponseEntity<>(gym, HttpStatus.CREATED);
     }
 
-    @PostMapping("/")
-    public ResponseEntity<Gym> getGym(@RequestBody Map<String, String> requestBody) {
-        String gymName = requestBody.get("gymName");
-        Gym gym = gymService.getGym(gymName);
+    @GetMapping("{id}")
+    public ResponseEntity<Gym> getGym(@RequestParam Long id) {
+        Gym gym = gymService.getGymByID(id);
         return new ResponseEntity<>(gym, HttpStatus.OK);
     }
 
-    @PostMapping("/checkInUpdate")
-    public ResponseEntity<Gym> checkInUpdate(@RequestBody Map<String, String> requestBody) {
-        Long gymId = Long.parseLong(requestBody.get("gymId"));
-
-        gymService.checkInUpdate(gymId);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @PostMapping("/checkOutUpdate")
-    public ResponseEntity<Gym> checkOutUpdate(@RequestBody Map<String, String> requestBody) {
-        Long gymId = Long.parseLong(requestBody.get("gymId"));
-
-        gymService.checkOutUpdate(gymId);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @PostMapping("/occupancy")
-    public ResponseEntity<Gym> getGymOccupancy(@RequestBody Map<String, String> requestBody) {
-        if(!requestBody.containsKey("gymId")){
-            return  new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    @GetMapping("/occupancy/{id}")
+    public ResponseEntity<Integer> getGymOccupancy(@RequestParam Long id) {
+        Integer occupancy = gymService.getOccupancy(id);
+        if (occupancy == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        Long gymId = Long.parseLong(requestBody.get("gymId"));
-        Gym gym = gymService.getOccupancy(gymId);
-        return new ResponseEntity<>(gym, HttpStatus.OK);
+        return new ResponseEntity<>(occupancy, HttpStatus.OK);
     }
 }
