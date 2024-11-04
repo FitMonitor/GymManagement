@@ -40,27 +40,4 @@ public class GymService {
                 .map(Gym::getOccupancy)
                 .orElse(null);
     }
-
-    public void checkInUpdate(Long gymId){
-        Optional<Gym> gym = gymRepository.findById(gymId);
-        if (gym.isPresent()) {
-            gym.get().checkInUpdate();
-        }
-        else {
-            throw new RuntimeException("Gym doesn't exists");
-        }
-        gymRepository.save(gym.get());
-    }
-
-    public void checkOutUpdate(Long gymId){
-        Optional<Gym> gym = gymRepository.findById(gymId);
-        if (gym.isPresent()) {
-            gym.get().checkOutUpdate();
-        }
-        else {
-            throw new RuntimeException("Gym doesn't exists");
-        }
-        gymRepository.save(gym.get());
-    }
-
 }
