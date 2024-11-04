@@ -19,17 +19,4 @@ public class Gym {
     private int capacity;
     @JsonProperty("occupancy")
     private int occupancy;
-
-
-    public void checkInUpdate() {
-        this.occupancy++;
-    }
-
-    public  void checkOutUpdate() {
-        this.occupancy--;
-    }
-
-    public Long getGymId() {
-        return gymId;
-    }
 }
