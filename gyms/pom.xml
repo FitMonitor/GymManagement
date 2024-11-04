@@ -181,10 +181,10 @@
 					<excludes>
 						<exclude>**/configuration/**</exclude>
 						<exclude>**/exceptions/**</exclude>
-						<exclude>deti/fitmonitor/gyms/services/JwtUtilService.class</exclude>
-						<exclude>deti/fitmonitor/gyms/controllers/GetTokenController.class</exclude>
-						<exclude>deti/fitmonitor/gyms/GymsApplication.class</exclude>
-						<exclude>deti/fitmonitor/gyms/init/DataInit.class</exclude>
+						<exclude>deti/fitmonitor/gyms/services/JwtUtilService.java</exclude>
+						<exclude>deti/fitmonitor/gyms/controllers/GetTokenController.java</exclude>
+						<exclude>deti/fitmonitor/gyms/GymsApplication.java</exclude>
+						<exclude>deti/fitmonitor/gyms/init/DataInit.java</exclude>
 					</excludes>
 				</configuration>
 				<executions>
