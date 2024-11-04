@@ -1,12 +1,8 @@
 package deti.fitmonitor.gyms.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import java.util.List;
+import lombok.*;
 
 
 @Getter
@@ -14,16 +10,13 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Gym")
+@Table(name = "gyms")
 public class Gym {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private Integer capacity;
-
-    @OneToMany(mappedBy = "gym")
-    private List<Machine> machines;
-
-    private String description;
+    private Long gymId;
+    private String gymName;
+    private int capacity;
+    @JsonProperty("occupancy")
+    private int occupancy;
 }

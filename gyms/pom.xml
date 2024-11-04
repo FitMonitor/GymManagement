@@ -184,7 +184,7 @@
 						<exclude>deti/fitmonitor/gyms/services/JwtUtilService.class</exclude>
 						<exclude>deti/fitmonitor/gyms/controllers/GetTokenController.class</exclude>
 						<exclude>deti/fitmonitor/gyms/GymsApplication.class</exclude>
-						<exclude></exclude>
+						<exclude>deti/fitmonitor/gyms/init/DataInit.class</exclude>
 					</excludes>
 				</configuration>
 				<executions>
