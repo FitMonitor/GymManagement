@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -28,5 +30,9 @@ public class Machine {
     private Gym gym;
 
     private String description;
+
+    @OneToMany(mappedBy = "machine")
+    @JsonIgnoreProperties("machine")
+    private List<Exercise> exercises;
 }
 
