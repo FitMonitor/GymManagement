@@ -15,7 +15,7 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/machine")
-@Tag(name = "movies", description = "Endpoints to manage movies")
+@Tag(name = " movies", description = "Endpoints to manage movies")
 public class MachineController {
     private final MachineService machineService;
 
