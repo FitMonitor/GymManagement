@@ -1,5 +1,5 @@
 services:
-  mysql:
+  mysql-gyms:
     image: 'mysql:latest'
     environment:
       - 'MYSQL_DATABASE=mydatabase'

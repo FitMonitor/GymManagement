@@ -3,5 +3,6 @@ CREATE TABLE machine (
     name VARCHAR(255),
     available BOOLEAN,
     description VARCHAR(255),
-    gym_id BIGINT
+    gym_id BIGINT,
+    USER_SUB VARCHAR(255)
 );
