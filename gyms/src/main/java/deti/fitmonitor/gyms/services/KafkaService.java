@@ -40,9 +40,11 @@ public class KafkaService {
         // Check machine state (e.g., in use or available)
         String response;
         if (machineService.isMachineAvailable(Long.parseLong(machineId), intention, userSub)) {
-            response = "Machine " + machineId + " is now " + (intention.equals("use") ? "in use" : "available");
+            System.out.println("Machine " + machineId + " is now " + (intention.equals("use") ? "in use" : "available"));
+            response = "True";
         } else {
-            response = "Machine " + machineId + " is already in use";
+            System.out.println("Machine " + machineId + " is already in use");
+            response = "False";
         }
 
         // Send response to the reply-topic with the same correlationId
@@ -70,16 +72,16 @@ public class KafkaService {
         if (gymService.isUserInGym(1L, userSub)) {
             gymService.removeUserFromGym(1L, userSub);
             System.out.println("User " + userSub + " left the gym");
-            kafkaTemplate.send("reply-topic", correlationId, "User " + userSub + " left the gym");
+            kafkaTemplate.send("reply-topic", correlationId, "Left");
             return;
         } else if (gymService.isGymFull(1L)) {
             System.out.println("Gym is full");
-            kafkaTemplate.send("reply-topic", correlationId, "Gym is full");
+            kafkaTemplate.send("reply-topic", correlationId, "Full");
             return;
         } else {
             gymService.addUserToGym(1L, userSub);
             System.out.println("User " + userSub + " entered the gym");
-            kafkaTemplate.send("reply-topic", correlationId, "User " + userSub + " entered the gym");
+            kafkaTemplate.send("reply-topic", correlationId, "Entered");
         }
     }
 
