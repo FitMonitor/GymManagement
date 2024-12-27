@@ -40,4 +40,32 @@ public class GymService {
                 .map(Gym::getOccupancy)
                 .orElse(null);
     }
+
+    public Boolean isGymFull(Long gymId) {
+        return gymRepository.findById(gymId)
+                .map(gym -> gym.getOccupancy() >= gym.getCapacity())
+                .orElse(null);
+    }
+
+    public Boolean isUserInGym(Long gymId, String userSub) {
+        return gymRepository.findById(gymId)
+                .map(gym -> gym.getUsersInGym().contains(userSub))
+                .orElse(null);
+    }
+
+    public void addUserToGym(Long gymId, String userSub) {
+        gymRepository.findById(gymId).ifPresent(gym -> {
+            gym.getUsersInGym().add(userSub);
+            gym.setOccupancy(gym.getOccupancy() + 1);
+            gymRepository.save(gym);
+        });
+    }
+
+    public void removeUserFromGym(Long gymId, String userSub) {
+        gymRepository.findById(gymId).ifPresent(gym -> {
+            gym.getUsersInGym().remove(userSub);
+            gym.setOccupancy(gym.getOccupancy() - 1);
+            gymRepository.save(gym);
+        });
+    }
 }

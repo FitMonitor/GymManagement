@@ -3,6 +3,7 @@ package deti.fitmonitor.gyms.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
+import java.util.List;
 
 
 @Getter
@@ -19,4 +20,7 @@ public class Gym {
     private int capacity;
     @JsonProperty("occupancy")
     private int occupancy;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> usersInGym;
 }
