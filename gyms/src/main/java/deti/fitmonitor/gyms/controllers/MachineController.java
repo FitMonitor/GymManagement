@@ -43,4 +43,10 @@ public class MachineController {
         return ResponseEntity.ok(machines);
     }
 
+    @GetMapping("/user")
+    public ResponseEntity<Machine> getMachineByUserSub(@RequestParam String userSub) {
+        Machine machine = machineService.getMachineByUserSub(userSub);
+        return ResponseEntity.ok(machine);
+    }
+
 }

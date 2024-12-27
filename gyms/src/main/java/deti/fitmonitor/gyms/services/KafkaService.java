@@ -39,9 +39,12 @@ public class KafkaService {
 
         // Check machine state (e.g., in use or available)
         String response;
-        if (machineService.isMachineAvailable(Long.parseLong(machineId), intention, userSub)) {
+        if (machineService.useMachine(Long.parseLong(machineId), intention, userSub)) {
             System.out.println("Machine " + machineId + " is now " + (intention.equals("use") ? "in use" : "available"));
             response = "True";
+        } else if (intention.equals("use") && machineService.getMachineByUserSub(userSub) != null) {
+            System.out.println("User " + userSub + " is already using a machine");
+            response = "User already using a machine";
         } else {
             System.out.println("Machine " + machineId + " is already in use");
             response = "False";

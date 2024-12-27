@@ -26,13 +26,17 @@ public class MachineService {
         return machineRepository.findAll();
     }
 
-    public Boolean isMachineAvailable(Long id, String intention, String userSub) {
+    public Machine getMachineByUserSub(String userSub) {
+        return machineRepository.findByUserSub(userSub).orElse(null);
+    }
+
+    public Boolean useMachine(Long id, String intention, String userSub) {
         Machine machine = machineRepository.findById(id).orElse(null);
         if (machine == null) {
             return false;
         }
 
-        if (intention.equals("use") && machine.getUserSub() == null && machine.isAvailable()) {
+        if (intention.equals("use") && machine.getUserSub() == null && machine.isAvailable() && getMachineByUserSub(userSub) == null) {
             machine.setUserSub(userSub);
             machine.setAvailable(false);
             machineRepository.save(machine);
