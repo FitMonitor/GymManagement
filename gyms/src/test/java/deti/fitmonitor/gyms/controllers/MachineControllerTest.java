@@ -96,13 +96,32 @@ class MachineControllerTest {
         when(machineService.createMachine(Mockito.any(Machine.class))).thenReturn(machine);
 
         mockMvc.perform(post("/machine")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(new ObjectMapper().writeValueAsString(machine)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(machine)))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.name", is("Machine 1")))
                 .andExpect(jsonPath("$.available", is(true)))
                 .andExpect(jsonPath("$.description", is("Description 1")));
     }
-    
+
+    @Test
+    void whenGetMachineByUserSubIDReturnMachine() throws Exception {
+        Machine machine = new Machine();
+        machine.setName("Machine 1");
+        machine.setAvailable(true);
+        machine.setDescription("Description 1");
+        machine.setUserSub("erf42368fek");
+
+        when(machineService.getMachineByUserSub("erf42368fek")).thenReturn(machine);
+
+        mockMvc.perform(get("/machine/user?userSub=erf42368fek"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.name").value("Machine 1"))
+                .andExpect(jsonPath("$.available").value(true))
+                .andExpect(jsonPath("$.description").value("Description 1"))
+                .andExpect(jsonPath("$.userSub").value("erf42368fek"));
+    }
+
 }

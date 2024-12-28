@@ -33,10 +33,6 @@ public class Machine {
 
     private String description;
 
-    @OneToMany(mappedBy = "machine")
-    @JsonIgnoreProperties("machine")
-    private List<Exercise> exercises;
-
     @Column(nullable = true)
     private String userSub;
 }

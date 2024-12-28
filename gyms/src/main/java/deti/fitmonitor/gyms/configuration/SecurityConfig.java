@@ -35,7 +35,6 @@ public class SecurityConfig {
                                 .requestMatchers("/api/token/*").permitAll()
                                 .requestMatchers("/machine/*").permitAll()
                                 .requestMatchers("/machine").permitAll()
-                                .requestMatchers("/api/gyms/*").permitAll()
                                 .requestMatchers("/swagger-ui/*").permitAll()
                                 .requestMatchers("/v3/api-docs").permitAll()
                                 .requestMatchers("/api/exercises/*").permitAll()

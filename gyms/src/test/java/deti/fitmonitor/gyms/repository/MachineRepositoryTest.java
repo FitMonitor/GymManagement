@@ -3,6 +3,7 @@ package deti.fitmonitor.gyms.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 
@@ -32,4 +33,21 @@ class MachineRepositoryTest {
         assertThat(machines).hasSize(1);
     }
 
+    @Test
+    void testFindByUserSub() {
+        Machine machine = new Machine();
+        machine.setName("Machine A");
+        machine.setAvailable(true);
+        machine.setDescription("Description A");
+        machine.setUserSub("feu1842572489ufjoekwj");
+        machineRepository.save(machine);
+
+        Optional<Machine> foundMachine = machineRepository.findByUserSub("feu1842572489ufjoekwj");
+
+        assertThat(foundMachine).isPresent();
+        assertThat(foundMachine.get().getName()).isEqualTo("Machine A");
+        assertThat(foundMachine.get().getDescription()).isEqualTo("Description A");
+        assertThat(foundMachine.get().isAvailable()).isTrue();
+        assertThat(foundMachine.get().getUserSub()).isEqualTo("feu1842572489ufjoekwj");
+    }
 }

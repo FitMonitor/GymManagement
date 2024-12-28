@@ -1,6 +1,7 @@
 package deti.fitmonitor.gyms.dataInit;
 
 import deti.fitmonitor.gyms.models.*;
+import deti.fitmonitor.gyms.repositories.GymRepository;
 import deti.fitmonitor.gyms.services.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +14,12 @@ import org.springframework.stereotype.Component;
 @Profile("test")
 public class DataInit implements CommandLineRunner {
     private MachineService machineService;
+    private GymRepository gymRepository;
 
     @Autowired
-    public DataInit(MachineService machineService) {
+    public DataInit(MachineService machineService,GymRepository gymRepository) {
         this.machineService = machineService;
+        this.gymRepository = gymRepository;
     }
 
     public void run(String... args) throws Exception {
@@ -56,6 +59,13 @@ public class DataInit implements CommandLineRunner {
         machine4.setDescription("Description 4");
 
         machineService.createMachine(machine4);
+
+        Gym gym = new Gym();
+        gym.setGymId(1L);
+        gym.setGymName("Fit Arena");
+        gym.setCapacity(100);
+        gym.setOccupancy(10);
+        gymRepository.save(gym);
     }
 
     

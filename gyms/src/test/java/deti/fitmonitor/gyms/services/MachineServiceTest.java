@@ -20,7 +20,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @Slf4j
-public class MachineServiceTest {
+class MachineServiceTest {
 
     @Mock
     private MachineRepository machineRepository;
@@ -92,6 +92,131 @@ public class MachineServiceTest {
         assertEquals(machines.get(1).isAvailable(), foundMachines.get(1).isAvailable());
         assertEquals(machines.get(1).getDescription(), foundMachines.get(1).getDescription());
     
+    }
+
+    @Test
+    void tesGetMachineByUserSub(){
+        Machine machine1 = new Machine();
+        machine1.setId(1L);
+        machine1.setName("Machine 1");
+        machine1.setAvailable(true);
+        machine1.setDescription("Description 1");
+        machine1.setUserSub("feu1842572489ufjoekwj");
+
+        Machine machine2 = new Machine();
+        machine2.setId(2L);
+        machine2.setName("Machine 2");
+        machine2.setAvailable(false);
+        machine2.setDescription("Description 2");
+        machine2.setUserSub("feu1842572489ufjfrgirigij1324");
+
+        when(machineRepository.findByUserSub("feu1842572489ufjfrgirigij1324")).thenReturn(Optional.of(machine2));
+
+        Machine foundMachine = machineService.getMachineByUserSub("feu1842572489ufjfrgirigij1324");
+
+        assertNotNull(foundMachine);
+        assertEquals(2L, foundMachine.getId());
+        assertEquals("Machine 2", foundMachine.getName());
+        assertFalse(foundMachine.isAvailable());
+        assertEquals("Description 2", foundMachine.getDescription());
+        assertEquals("feu1842572489ufjfrgirigij1324", foundMachine.getUserSub());
+    }
+
+    @Test
+    void testUseMachineSuccess() {
+        Machine machine = new Machine();
+        machine.setId(1L);
+        machine.setName("Machine 1");
+        machine.setAvailable(true);
+        machine.setUserSub(null);
+
+        when(machineRepository.findById(1L)).thenReturn(Optional.of(machine));
+        when(machineRepository.save(any())).thenReturn(machine);
+
+        Boolean result = machineService.useMachine(1L, "use", "user123");
+
+        assertTrue(result);
+        assertFalse(machine.isAvailable());
+        assertEquals("user123", machine.getUserSub());
+        assertEquals("user123", machine.getUserSub());
+        verify(machineRepository, times(1)).save(machine);
+    }
+
+    @Test
+    void testUseMachineAlreadyInUse() {
+        Machine machine = new Machine();
+        machine.setId(1L);
+        machine.setName("Machine 1");
+        machine.setAvailable(false);
+        machine.setUserSub("user456");
+
+        when(machineRepository.findById(1L)).thenReturn(Optional.of(machine));
+
+        Boolean result = machineService.useMachine(1L, "use", "user123");
+
+        assertFalse(result);
+        verify(machineRepository, never()).save(any());
+    }
+
+    @Test
+    void testLeaveMachineSuccess() {
+        Machine machine = new Machine();
+        machine.setId(1L);
+        machine.setName("Machine 1");
+        machine.setAvailable(false);
+        machine.setUserSub("user123");
+
+        when(machineRepository.findById(1L)).thenReturn(Optional.of(machine));
+        when(machineRepository.save(any())).thenReturn(machine);
+
+        Boolean result = machineService.useMachine(1L, "leave", "user123");
+
+        assertTrue(result);
+        assertTrue(machine.isAvailable());
+        assertNull(machine.getUserSub());
+        verify(machineRepository, times(1)).save(machine);
+    }
+
+    @Test
+    void testLeaveMachineNotOwned() {
+        Machine machine = new Machine();
+        machine.setId(1L);
+        machine.setName("Machine 1");
+        machine.setAvailable(false);
+        machine.setUserSub("user456");
+
+        when(machineRepository.findById(1L)).thenReturn(Optional.of(machine));
+
+        Boolean result = machineService.useMachine(1L, "leave", "user123");
+
+        assertFalse(result);
+        verify(machineRepository, never()).save(any());
+    }
+
+    @Test
+    void testUseMachineNotFound() {
+        when(machineRepository.findById(1L)).thenReturn(Optional.empty());
+
+        Boolean result = machineService.useMachine(1L, "use", "user123");
+
+        assertFalse(result);
+        verify(machineRepository, never()).save(any());
+    }
+
+    @Test
+    void testInvalidIntention() {
+        Machine machine = new Machine();
+        machine.setId(1L);
+        machine.setName("Machine 1");
+        machine.setAvailable(true);
+        machine.setUserSub(null);
+
+        when(machineRepository.findById(1L)).thenReturn(Optional.of(machine));
+
+        Boolean result = machineService.useMachine(1L, "invalid", "user123");
+
+        assertFalse(result);
+        verify(machineRepository, never()).save(any());
     }
     
 }
