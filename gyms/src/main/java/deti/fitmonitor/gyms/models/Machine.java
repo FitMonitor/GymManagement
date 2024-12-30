@@ -35,5 +35,14 @@ public class Machine {
 
     @Column(nullable = true)
     private String userSub;
+
+    private String imagePath;
+
+    public Machine(String name, String description, boolean available, Gym gym) {
+        this.name = name;
+        this.description = description;
+        this.available = available;
+        this.gym = gym;
+    }
 }
 
