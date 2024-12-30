@@ -4,7 +4,8 @@ CREATE TABLE machine (
     available BOOLEAN,
     description VARCHAR(255),
     gym_id BIGINT,
-    USER_SUB VARCHAR(255)
+    USER_SUB VARCHAR(255),
+    IMAGE_PATH VARCHAR(255)
 );
 
 CREATE TABLE gyms (

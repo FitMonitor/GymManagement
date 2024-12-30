@@ -21,7 +21,6 @@ import java.nio.file.StandardCopyOption;
 
 import java.util.List;
 
-//cors
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/machine")
