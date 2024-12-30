@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import deti.fitmonitor.gyms.models.Machine;
 import deti.fitmonitor.gyms.services.JwtUtilService;
@@ -95,7 +94,6 @@ class MachineControllerTest {
     @Test
     void whenCreateMachineWithImageReturnMachine() throws Exception {
         // Prepare test data
-        String imagePath = "/path/to/image.jpg";
         Machine machine = new Machine();
         machine.setName("Machine 1");
         machine.setDescription("Description 1");

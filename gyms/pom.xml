@@ -22,6 +22,16 @@
 		<webdrivermanager.version>5.7.0</webdrivermanager.version>
 		<sonar.organization>fitmonitor</sonar.organization>
 	    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+		<sonar.exclusions>
+        **/configuration/**, 
+        **/deti/fitmonitor/gyms/configuration/JwtAuthFilter*, 
+        **/deti/fitmonitor/gyms/services/JwtUtilService*, 
+        **/deti/fitmonitor/gyms/controllers/GetTokenController*, 
+        **/deti/fitmonitor/gyms/UsersApplication*, 
+        /**/test/**, 
+        /**/*.spec.ts, 
+        /**/generated/**
+    </sonar.exclusions>
 	</properties>
 	<dependencies>
 		<dependency>

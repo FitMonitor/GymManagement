@@ -19,6 +19,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
+import org.slf4j.Logger;
+
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200")
@@ -28,6 +30,8 @@ import java.util.List;
 public class MachineController {
     private final MachineService machineService;
     private final GymService gymService;
+
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(MachineController.class);
 
     public MachineController(MachineService machineService,GymService gymService) {
         this.machineService = machineService;
@@ -101,9 +105,17 @@ public class MachineController {
     @Operation(summary = "Get machine image by path")
     public ResponseEntity<byte[]> getMachineImage(@RequestParam String imagePath) {
         try {
-            Path filePath = Paths.get("uploads/").resolve(imagePath);
+            // Base directory for images
+            Path uploadsDirectory = Paths.get("uploads/").toAbsolutePath().normalize();
 
-            if (!Files.exists(filePath)) {
+            // Sanitize the user input
+            Path sanitizedPath = Paths.get(imagePath).normalize();
+
+            // Resolve the sanitized path against the base directory
+            Path filePath = uploadsDirectory.resolve(sanitizedPath).normalize();
+
+            // Check if the resolved path is within the allowed directory
+            if (!filePath.startsWith(uploadsDirectory) || !Files.exists(filePath)) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
             }
 
@@ -116,7 +128,8 @@ public class MachineController {
                     .body(imageBytes);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Error reading image file", e);
+            
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
