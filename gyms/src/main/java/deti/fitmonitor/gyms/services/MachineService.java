@@ -26,5 +26,34 @@ public class MachineService {
         return machineRepository.findAll();
     }
 
+    public Machine getMachineByUserSub(String userSub) {
+        return machineRepository.findByUserSub(userSub).orElse(null);
+    }
+
+    public Boolean useMachine(Long id, String intention, String userSub) {
+        Machine machine = machineRepository.findById(id).orElse(null);
+        if (machine == null) {
+            return false;
+        }
+
+        if (intention.equals("use") && machine.getUserSub() == null && machine.isAvailable() && getMachineByUserSub(userSub) == null) {
+            machine.setUserSub(userSub);
+            machine.setAvailable(false);
+            machineRepository.save(machine);
+            return true;
+        } else if (intention.equals("use") && machine.getUserSub() != null) {
+            return false;
+        } else if (intention.equals("leave") && machine.getUserSub().equals(userSub)) {
+            machine.setUserSub(null);
+            machine.setAvailable(true);
+            machineRepository.save(machine);
+            return true;
+        } else if (intention.equals("leave") && machine.getUserSub() != userSub) {
+            return false;
+        } else {
+            return false;
+        }
+    }
+
 }
 

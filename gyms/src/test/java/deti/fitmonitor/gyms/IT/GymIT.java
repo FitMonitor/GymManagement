@@ -1,11 +1,13 @@
 package deti.fitmonitor.gyms.IT;
 
 import deti.fitmonitor.gyms.controllers.GetTokenController;
+import deti.fitmonitor.gyms.models.Gym;
 import deti.fitmonitor.gyms.models.Machine;
 import deti.fitmonitor.gyms.services.JwtUtilService;
 
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -22,12 +24,11 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {"spring.profiles.active=test"})
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class MachineIT {
 
+public class GymIT {
     @MockBean
     private JwtUtilService jwtUtilService;
 
@@ -36,11 +37,11 @@ public class MachineIT {
 
     @Container
     public static GenericContainer container = new GenericContainer("mysql:latest")
-        .withExposedPorts(3306)
-        .withEnv("MYSQL_ROOT_PASSWORD", "rootpass")
-        .withEnv("MYSQL_DATABASE", "mydatabase")
-        .withEnv("MYSQL_USER", "user")
-        .withEnv("MYSQL_PASSWORD", "secret");
+            .withExposedPorts(3306)
+            .withEnv("MYSQL_ROOT_PASSWORD", "rootpass")
+            .withEnv("MYSQL_DATABASE", "mydatabase")
+            .withEnv("MYSQL_USER", "user")
+            .withEnv("MYSQL_PASSWORD", "secret");
 
     @DynamicPropertySource
     static void configureProperties(DynamicPropertyRegistry registry) {
@@ -50,58 +51,68 @@ public class MachineIT {
         registry.add("spring.datasource.password", () -> "secret");
     }
 
+
+    @Value("${JWT_TOKEN_IT_TESTS}")
+    private String token;
+
     @LocalServerPort
     private int port;
 
     @Autowired
     private TestRestTemplate restTemplate;
 
-    //do beforeAll to get token after
-
     @Test
     @Order(1)
     @Disabled
-    void whenGetAllMachinesReturnAllMachines() {
-        ResponseEntity<List<Machine>> response = restTemplate.exchange(
-                "http://localhost:" + port + "/machine/all",
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<Machine>>() {
-                });
+    void testCreateGym_ReturnGym() {
+        Gym gym = new Gym();
+        gym.setGymName("Gym 1");
+        gym.setCapacity(100);
+        gym.setOccupancy(0);
 
-        List<Machine> machines = response.getBody();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        //headers.set("Authorization", "Bearer " + jwtToken);
+        headers.setBearerAuth(token);
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
+        System.out.println(headers);
 
-        assertEquals(4, machines.size());
+        HttpEntity<Gym> request = new HttpEntity<>(gym, headers);
+
+        ResponseEntity<Gym> response = restTemplate.exchange(
+                "http://localhost:" + port + "/api/gyms/create",
+                HttpMethod.POST,
+                request,
+                Gym.class);
+
+        System.out.println("Response Status: " + response.getStatusCode());
+        System.out.println("Response Body: " + response.getBody());
+
+        Gym createdGym = response.getBody();
+
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
     }
 
     @Test
     @Order(2)
     @Disabled
-    void whenCreateMachineReturnMachine(){
-        Machine machine = new Machine();
-        machine.setName("Machine 5");
-        machine.setAvailable(true);
-        machine.setDescription("Description 5");
-
+    void testGetGym_ThenReturnGym(){
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("Authorization", "Bearer " + token);
 
-        HttpEntity<Machine> request = new HttpEntity<>(machine, headers);
+        System.out.println(headers);
 
-        ResponseEntity<Machine> response = restTemplate.exchange(
-                "http://localhost:" + port + "/machine",
-                HttpMethod.POST,
+        HttpEntity<Gym> request = new HttpEntity<>(headers);
+
+        ResponseEntity<Gym> response = restTemplate.exchange(
+                "http://localhost:" + port + "/api/gyms?id=1",
+                HttpMethod.GET,
                 request,
-                Machine.class);
+                Gym.class);
 
-        Machine createdMachine = response.getBody();
+        Gym responseGym = response.getBody();
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-
-        assertEquals("Machine 5", createdMachine.getName());
-        assertEquals("Description 5", createdMachine.getDescription());
     }
-
 }

@@ -8,6 +8,8 @@ import lombok.*;
 
 import java.util.List;
 
+import org.checkerframework.checker.units.qual.t;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -31,8 +33,7 @@ public class Machine {
 
     private String description;
 
-    @OneToMany(mappedBy = "machine")
-    @JsonIgnoreProperties("machine")
-    private List<Exercise> exercises;
+    @Column(nullable = true)
+    private String userSub;
 }
 
