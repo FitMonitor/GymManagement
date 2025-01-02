@@ -1,5 +1,7 @@
 package deti.fitmonitor.gyms.controllers;
 
+import deti.fitmonitor.gyms.models.Gym;
+import deti.fitmonitor.gyms.services.GymService;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.mockito.Mockito;
@@ -7,12 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import deti.fitmonitor.gyms.models.Machine;
 import deti.fitmonitor.gyms.services.JwtUtilService;
 import deti.fitmonitor.gyms.services.MachineService;
 
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -30,6 +32,9 @@ class MachineControllerTest {
 
     @MockBean
     private MachineService machineService;
+
+    @MockBean
+    private GymService gymService;
 
     @MockBean
     private JwtUtilService jwtUtilService;
@@ -87,23 +92,37 @@ class MachineControllerTest {
     }
 
     @Test
-    void whenCreateMachineReturnMachine() throws Exception {
+    void whenCreateMachineWithImageReturnMachine() throws Exception {
+        // Prepare test data
         Machine machine = new Machine();
         machine.setName("Machine 1");
-        machine.setAvailable(true);
         machine.setDescription("Description 1");
+        machine.setAvailable(true);
 
+        // Mock the services
+        when(gymService.getGymByID(1L)).thenReturn(new Gym());
         when(machineService.createMachine(Mockito.any(Machine.class))).thenReturn(machine);
 
-        mockMvc.perform(post("/machine")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(machine)))
-                .andExpect(status().isCreated())
+        // Simulate file upload
+        MockMultipartFile image = new MockMultipartFile(
+                "image",
+                "image.jpg",
+                MediaType.IMAGE_JPEG_VALUE,
+                "dummy content".getBytes());
+
+        // Perform the POST request and assert the response
+        mockMvc.perform(multipart("/machine")
+                        .file(image)
+                        .param("name", "Machine 1")
+                        .param("description", "Description 1")
+                        .param("available", "true"))
+                .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.name", is("Machine 1")))
-                .andExpect(jsonPath("$.available", is(true)))
-                .andExpect(jsonPath("$.description", is("Description 1")));
+                .andExpect(jsonPath("$.description", is("Description 1")))
+                .andExpect(jsonPath("$.available", is(true)));
     }
+
 
     @Test
     void whenGetMachineByUserSubIDReturnMachine() throws Exception {
