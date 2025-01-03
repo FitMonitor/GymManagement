@@ -16,15 +16,6 @@ public class GymController {
     @Autowired
     private GymService gymService;
 
-    @PostMapping("/create")
-    public ResponseEntity<Gym> createGym(@RequestBody Gym gym) {
-        if (gym.getGymName() == null || gym.getCapacity() == 0) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        gymService.createGym(gym.getGymName(), gym.getCapacity());
-        return new ResponseEntity<>(gym, HttpStatus.CREATED);
-    }
-
     @GetMapping()
     public ResponseEntity<Gym> getGym(@RequestParam Long id) {
         Gym gym = gymService.getGymByID(id);

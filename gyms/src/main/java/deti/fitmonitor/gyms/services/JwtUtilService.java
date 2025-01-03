@@ -126,10 +126,6 @@ public class JwtUtilService {
     }
 
     public boolean validateToken(String token) throws Exception {
-        // Extract the username from the token
-        String username = extractUserSub(token);
-        // Extract the expiration date from the token
-        Date expiration = extractExpiration(token);
         // Check if the token has expired
         if (isTokenExpired(token)) {
             return false;

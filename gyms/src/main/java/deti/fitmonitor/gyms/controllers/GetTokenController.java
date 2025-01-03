@@ -124,11 +124,6 @@ public class GetTokenController {
         }
     }
 
-    // Helper method to create response map
-    private Map<String, Object> getTokenResponse(String token) {
-        return Map.of("token", token, "roles", List.of());
-    }
-
     // Overloaded helper method to create response map with roles
     private Map<String, Object> getTokenResponse(String token, List<String> roles) {
         return Map.of("token", token, "roles", roles);

@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import deti.fitmonitor.gyms.services.JwtUtilService;
 
@@ -31,32 +30,7 @@ class GymControllerTest {
     @MockBean
     private JwtUtilService jwtUtilService;
 
-    @Test
-    void createGym_ValidRequest_ShouldReturnCreated() throws Exception {
-        Gym gym = new Gym();
-        gym.setGymName("Gym 1");
-        gym.setCapacity(100);
-        gym.setOccupancy(0);
-
-        when(gymService.createGym("Gym 1", 100)).thenReturn(gym);
-
-        mockMvc.perform(post("/api/gyms/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(gym)))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.gymName").value("Gym 1"))
-                .andExpect(jsonPath("$.capacity").value(100))
-                .andExpect(jsonPath("$.occupancy").value(0));
-    }
-
-    @Test
-    void createGym_BadCreation_ShouldReturnBadRequest() throws Exception{
-        mockMvc.perform(post("/api/gyms/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString("")))
-                .andExpect(status().isBadRequest());
-    }
-
+    
     @Test
     void getGym_ValidRequest_ShouldReturnGym() throws Exception {
         Gym gym = new Gym();
