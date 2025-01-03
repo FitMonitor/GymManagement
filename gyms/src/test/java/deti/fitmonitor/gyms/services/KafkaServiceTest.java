@@ -38,6 +38,7 @@ class KafkaServiceTest {
         mockMachine.setAvailable(true);
 
         when(machineService.useMachine(1L, "use", "user123")).thenReturn(true);
+        when(gymService.isUserInGym(1L, "user123")).thenReturn(true);
 
         kafkaService.processMachineRequest(message, correlationId);
 
@@ -50,6 +51,7 @@ class KafkaServiceTest {
         String correlationId = "correlationId123";
 
         when(machineService.getMachineByUserSub("user123")).thenReturn(new Machine());
+        when(gymService.isUserInGym(1L, "user123")).thenReturn(true);
 
         kafkaService.processMachineRequest(message, correlationId);
 
@@ -64,9 +66,24 @@ class KafkaServiceTest {
         mockMachine.setUserSub("user456");
         mockMachine.setAvailable(false);
 
+        when(machineService.useMachine(1L, "use", "user123")).thenReturn(false);
+        when(gymService.isUserInGym(1L, "user123")).thenReturn(true);
+
         kafkaService.processMachineRequest(message, correlationId);
 
         verify(kafkaTemplate, times(1)).send("reply-topic", correlationId, "False");
+    }
+
+    @Test
+    void testProcessMachineRequest_UserNotInGym_ShouldSendUserNotInGym() {
+        String message = "1 use user123";
+        String correlationId = "correlationId123";
+
+        when(gymService.isUserInGym(1L, "user123")).thenReturn(false);
+
+        kafkaService.processMachineRequest(message, correlationId);
+
+        verify(kafkaTemplate, times(1)).send("reply-topic", correlationId, "User not in gym");
     }
 
     @Test
