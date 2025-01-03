@@ -4,9 +4,6 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Service;
-import deti.fitmonitor.gyms.services.MachineService;
-import deti.fitmonitor.gyms.services.GymService;
-import deti.fitmonitor.gyms.services.JwtUtilService;
 
 @Service
 public class KafkaService {
@@ -39,7 +36,9 @@ public class KafkaService {
 
         // Check machine state (e.g., in use or available)
         String response;
-        if (machineService.useMachine(Long.parseLong(machineId), intention, userSub)) {
+        if (!gymService.isUserInGym(1L, userSub)) {
+            response = "User not in gym";
+        } else if (machineService.useMachine(Long.parseLong(machineId), intention, userSub)) {
             System.out.println("Machine " + machineId + " is now " + (intention.equals("use") ? "in use" : "available"));
             response = "True";
         } else if (intention.equals("use") && machineService.getMachineByUserSub(userSub) != null) {

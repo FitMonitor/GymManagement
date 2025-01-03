@@ -1,7 +1,6 @@
 package deti.fitmonitor.gyms.services;
 
 import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 import deti.fitmonitor.gyms.models.Machine;
 import lombok.extern.slf4j.Slf4j;
