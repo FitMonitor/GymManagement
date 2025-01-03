@@ -36,9 +36,9 @@ public class KafkaService {
 
         // Check machine state (e.g., in use or available)
         String response;
-        if (!gymService.isUserInGym(1L, userSub)) {
-            response = "User not in gym";
-        } else if (machineService.useMachine(Long.parseLong(machineId), intention, userSub)) {
+        if (!Boolean.TRUE.equals(gymService.isUserInGym(1L, userSub))) {
+            response = "User not in gym";  
+        } else if (Boolean.TRUE.equals(machineService.useMachine(Long.parseLong(machineId), intention, userSub))) {
             System.out.println("Machine " + machineId + " is now " + (intention.equals("use") ? "in use" : "available"));
             response = "True";
         } else if (intention.equals("use") && machineService.getMachineByUserSub(userSub) != null) {
