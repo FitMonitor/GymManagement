@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.io.IOException;
@@ -41,6 +43,10 @@ public class MachineController {
 
     @PostMapping
     @Operation(summary = "Create a new machine")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Machine created"),
+        @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     public ResponseEntity<Machine> createMachine(
         @RequestParam("name") String name,
         @RequestParam("description") String description,
@@ -84,18 +90,30 @@ public class MachineController {
 
     @GetMapping
     @Operation(summary = "Get a machine by id")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Machine found"),
+        @ApiResponse(responseCode = "404", description = "Machine not found")
+    })
     public ResponseEntity<Machine> getMachine(@RequestParam Long id) {
         Machine machine = machineService.getMachine(id);
         return ResponseEntity.ok(machine);
     }
 
     @GetMapping("/all")
+    @Operation(summary = "Get all machines")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Machines found"),
+    })
     public ResponseEntity<List<Machine>>  getMachines() {
         List<Machine> machines = machineService.getAllMachines();
         return ResponseEntity.ok(machines);
     }
 
     @GetMapping("/user")
+    @Operation(summary = "Get machine by user sub")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Machine found"),
+    })
     public ResponseEntity<Machine> getMachineByUserSub(@RequestParam String userSub) {
         Machine machine = machineService.getMachineByUserSub(userSub);
         return ResponseEntity.ok(machine);
@@ -103,6 +121,11 @@ public class MachineController {
 
     @GetMapping("/image")
     @Operation(summary = "Get machine image by path")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Image found"),
+        @ApiResponse(responseCode = "404", description = "Image not found"),
+        @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     public ResponseEntity<byte[]> getMachineImage(@RequestParam String imagePath) {
         try {
             // Base directory for images
