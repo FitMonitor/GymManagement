@@ -32,10 +32,13 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable) //NOSONAR
                 .authorizeHttpRequests(
                         request -> request
+                                .requestMatchers("/default/api/token/*").permitAll()
+                                .requestMatchers("/default/api/token/test").permitAll()
                                 .requestMatchers("/api/token/*").permitAll()
                                 .requestMatchers("/swagger-ui/*").permitAll()
                                 .requestMatchers("/v3/api-docs").permitAll()
-                                .requestMatchers("/machine").hasRole("Admin")
+                                .requestMatchers("/default/api/gyms/machine").hasRole("Admin")
+                                .requestMatchers("/actuator/health").permitAll()
                                 .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);

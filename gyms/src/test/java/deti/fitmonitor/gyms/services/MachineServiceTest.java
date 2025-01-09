@@ -218,5 +218,36 @@ class MachineServiceTest {
         assertFalse(result);
         verify(machineRepository, never()).save(any());
     }
+
+    @Test
+    void testDeleteMachine() {
+        Machine machine = new Machine();
+        machine.setId(1L);
+        machine.setName("Machine 1");
+        machine.setAvailable(true);
+        machine.setDescription("Description 1");
+
+        when(machineRepository.findById(1L)).thenReturn(Optional.of(machine));
+        doNothing().when(machineRepository).deleteById(1L); // Adjusted to match the service method
+
+        Boolean result = machineService.deleteMachine(1L);
+
+        assertTrue(result);
+        verify(machineRepository, times(1)).deleteById(1L); // Verify deleteById is called
+    }
+
+
+    @Test
+    void testDeleteMachineNotFound() {
+        when(machineRepository.findById(1L)).thenReturn(Optional.empty());
+
+        Boolean result = machineService.deleteMachine(1L);
+
+        assertFalse(result);
+        verify(machineRepository, never()).deleteById(any()); // Verifying no deleteById call
+    }
+
+
+
     
 }

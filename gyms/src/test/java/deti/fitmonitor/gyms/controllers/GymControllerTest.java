@@ -37,7 +37,7 @@ class GymControllerTest {
         gym.setGymName("test");
         when(gymService.getGymByID(1L)).thenReturn(gym);
 
-        mockMvc.perform(get("/api/gyms?id=1")
+        mockMvc.perform(get("/default/api/gyms?id=1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.gymName").value("test"));
@@ -45,7 +45,7 @@ class GymControllerTest {
 
     @Test
     void getGym_InvalidRequest_GymNotFound() throws Exception {
-        mockMvc.perform(get("/api/gyms?id=1")
+        mockMvc.perform(get("/default/api/gyms?id=1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
 
@@ -61,7 +61,7 @@ class GymControllerTest {
 
         when(gymService.getOccupancy(1L)).thenReturn(20);
 
-        mockMvc.perform(get("/api/gyms/occupancy?id=1")
+        mockMvc.perform(get("/default/api/gyms/occupancy?id=1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
@@ -71,7 +71,7 @@ class GymControllerTest {
     void getGymOccupancy_MissingId_ShouldReturnNoContent() throws Exception {
         when(gymService.getOccupancy(500L)).thenReturn(null);
 
-        mockMvc.perform(get("/api/gyms/occupancy?id=500")
+        mockMvc.perform(get("/default/api/gyms/occupancy?id=500")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
