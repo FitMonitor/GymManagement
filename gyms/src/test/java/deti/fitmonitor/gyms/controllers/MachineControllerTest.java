@@ -195,6 +195,45 @@ class MachineControllerTest {
     }
 
     @Test
+    void testDeleteMachineSuccess() {
+        Machine machine = new Machine();
+        machine.setId(1L);
+        machine.setName("Test Machine");
+
+        when(machineService.getMachine(1L)).thenReturn(machine);
+        when(machineService.deleteMachine(1L)).thenReturn(true);
+
+        ResponseEntity<Machine> response = machineController.deleteMachine(1L);
+
+        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(machine, response.getBody());
+    }
+
+    @Test
+    void testDeleteMachineNotFound() {
+        when(machineService.getMachine(1L)).thenReturn(null);
+
+        ResponseEntity<Machine> response = machineController.deleteMachine(1L);
+
+        assertEquals(404, response.getStatusCodeValue());
+        assertNull(response.getBody());
+    }
+
+    @Test
+    void testDeleteMachineError() {
+        Machine machine = new Machine();
+        machine.setId(1L);
+
+        when(machineService.getMachine(1L)).thenReturn(machine);
+        when(machineService.deleteMachine(1L)).thenReturn(false);
+
+        ResponseEntity<Machine> response = machineController.deleteMachine(1L);
+
+        assertEquals(500, response.getStatusCodeValue());
+        assertNull(response.getBody());
+    }
+
+    @Test
     void whenGetAllMachinesReturnAllMachines() throws Exception {
         Machine machine1 = new Machine();
         machine1.setId(1L);
