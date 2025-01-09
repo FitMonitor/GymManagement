@@ -12,9 +12,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "https://es-ua.ddns.net")
 @RestController
-@RequestMapping("/api/gyms")
+@RequestMapping("/default/api/gyms")
 public class GymController {
 
     @Autowired

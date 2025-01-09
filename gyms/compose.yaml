@@ -8,3 +8,18 @@ services:
       - 'MYSQL_USER=user'
     ports:
       - '3306'
+    networks:
+      - mynetwork
+
+  spring-app:
+    build: .
+    depends_on:
+      - mysql-gyms
+    networks:
+      - mynetwork
+    expose:
+      - "9090"
+
+networks:
+  mynetwork:
+    driver: bridge

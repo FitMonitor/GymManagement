@@ -30,6 +30,19 @@ public class MachineService {
         return machineRepository.findByUserSub(userSub).orElse(null);
     }
 
+    //delete machine
+    public boolean deleteMachine(Long id) {
+        //if machine is not available, it can be deleted
+        Machine machine = machineRepository.findById(id).orElse(null);
+        if (machine != null && machine.isAvailable()) {
+            machineRepository.deleteById(id);
+            return true;
+
+        } else {
+            return false;
+        }
+    }
+
     public Boolean useMachine(Long id, String intention, String userSub) {
         Machine machine = machineRepository.findById(id).orElse(null);
         if (machine == null) {

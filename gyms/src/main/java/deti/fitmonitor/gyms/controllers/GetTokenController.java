@@ -23,9 +23,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
-@CrossOrigin(origins = "http://localhost:4200") // Allow all origins for CORS
+@CrossOrigin(origins = "https://es-ua.ddns.net")
 @RestController
-@RequestMapping("/api/token")
+@RequestMapping("/default/api/token")
 public class GetTokenController {
 
     @Value("${external.auth.token.url}") // Define in application.properties
@@ -103,7 +103,7 @@ public class GetTokenController {
             // Prepare body
             String body = "grant_type=authorization_code" +
                           "&code=" + code +
-                          "&redirect_uri=http://localhost:4200/callback";
+                          "&redirect_uri=https://es-ua.ddns.net/callback";
 
             // Create request entity
             HttpEntity<String> entity = new HttpEntity<>(body, headers);
@@ -135,5 +135,11 @@ public class GetTokenController {
     // Overloaded helper method to create response map with roles
     private Map<String, Object> getTokenResponse(String token, List<String> roles) {
         return Map.of("token", token, "roles", roles);
+    }
+
+    //test method
+    @GetMapping("/test")
+    public String test() {
+        return "Test";
     }
 }
