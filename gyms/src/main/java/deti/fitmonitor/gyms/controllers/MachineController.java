@@ -88,7 +88,7 @@ public class MachineController {
         }
     }
 
-    private String uploadImageToS3(MultipartFile image) throws IOException {
+    String uploadImageToS3(MultipartFile image) throws IOException {
         String fileName = UUID.randomUUID().toString() + "_" + image.getOriginalFilename();
 
         // Upload file to S3 bucket
@@ -116,23 +116,6 @@ public class MachineController {
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
-    }
-
-    private String saveImage(MultipartFile image) throws IOException {
-        // Define the directory to store the uploaded images
-        Path uploadDirectory = Paths.get("uploads/");
-    
-        // Create the directory if it doesn't exist
-        Files.createDirectories(uploadDirectory); // This ensures the directory exists
-    
-        // Define the path where the image will be saved
-        String imageName = image.getOriginalFilename();
-        Path filePath = uploadDirectory.resolve(imageName);
-    
-        // Save the image to the file system
-        Files.copy(image.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-    
-        return filePath.toString(); // Return the path to the saved image
     }
 
 
